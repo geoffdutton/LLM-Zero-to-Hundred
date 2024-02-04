@@ -1,34 +1,32 @@
 {
-    "name": "LLM Dev Container 6000",
-    "features": {
-      "ghcr.io/devcontainers/features/node": {
-        "version": "lts"
+  "name": "LLM Dev Container 6000",
+  "image": "ghcr.io/devcontainers/miniconda3:3.10",
+  "features": {
+    "ghcr.io/devcontainers/features/node": {
+      "version": "lts",
+      "install": ["eslint", "prettier"],
+      "nvmVersion": "latest"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "terminal.integrated.shell.linux": "/bin/bash",
+        "editor.theme": "Visual Studio Dark",
+        "python.linting.enabled": true,
+        "python.linting.pylintEnabled": true,
+        "python.formatting.provider": "autopep8",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true
       },
-      "ghcr.io/devcontainers/features/python": {
-        "version": "3.10"
-      }
-    },
-    "customizations": {
-      "vscode": {
-        "settings": {
-          "terminal.integrated.shell.linux": "/bin/bash",
-          "editor.theme": "Visual Studio Dark",
-          "python.pythonPath": "/usr/local/bin/python",
-          "python.linting.enabled": true,
-          "python.linting.pylintEnabled": true,
-          "python.formatting.autopep8Path": "/usr/local/py-utils/bin/autopep8",
-          "python.formatting.blackPath": "/usr/local/py-utils/bin/black",
-          "python.formatting.provider": "black"
-        },
-        "extensions": [
-          "ms-python.python",
-          "ms-python.vscode-pylance",
-          "GitHub.copilot",
-          "esbenp.prettier-vscode"
-        ]
-      }
-    },
-    "forwardPorts": [3000, 8080],
-    "postCreateCommand": "pip install -U pip"
-  }
-  
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "GitHub.copilot",
+        "esbenp.prettier-vscode"
+      ]
+    }
+  },
+  "forwardPorts": [3000, 8080],
+  "postCreateCommand": "pip install -U pip"
+}
