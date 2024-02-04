@@ -1,6 +1,6 @@
 {
   "name": "LLM Dev Container 6000",
-  "image": "ghcr.io/devcontainers/miniconda3:3.10",
+  "image": "mcr.microsoft.com/devcontainers/miniconda:3",
   "features": {
     "ghcr.io/devcontainers/features/node": {
       "version": "lts",
