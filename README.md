@@ -10,14 +10,14 @@ This repository showcases various applications of LLM chatbots and provides comp
 - [x] [RAG-GPT](#RAG-GPT)
 - [x] [WebRAGQuery](#WebRAGQuery)
 - [x] [LLM Full Finetuning](#Fine-tuning-LLMs)
-- [ ] [RAG-Master LLamaindex vs Langchain](coming-soon): Will be added soon.
+- [x] [RAG-Master LLamaindex vs Langchain](RAGMaster)
 - [ ] [Multimodal ChatBot](#Multimodal-ChatBot): Will be added soon.
 - [ ] [PEFT: Parameter-Efficient Finetuning](coming-soon): Will be added soon.
 - [ ] [LLM Pretraining](coming-soon): Will be added soon.
 
 ### List of tutorials
 - [x] [LLM Function Calling Tutorial](#LLM-function-calling-tutorial)
-- [x] [Vectorization Tutorial](#LLM-function-calling-tutorial)
+- [x] [Vectorization Tutorial](#Vectorization-Tutorial)
 
 General structure of the projects:
 
@@ -37,12 +37,23 @@ NOTE: This is the general structure of the projects, however there might be smal
 
 ## Project description:
 <!-- ====================================== -->
+<!-- WebGPT -->
+<!-- ====================================== -->
+<a id="RAGMaster"></a>
+<h3><a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/RAGMaster-LlamaIndex-vs-Langchain"><b>RAGMaster-LlamaIndex-vs-Langchain:</b></a></h3>
+<p>
+In this project, I compare the performance of `5` famous RAG techniques which have been proposed by Langchain and Llama-index. The test is being done on `40` questions on `5` different documents. Moreover, the projects provides `2` separate RAG chatbots that offer `8` RAG techniques from these two frameworks.
+
+**YouTube video:** [Link](https://www.youtube.com/watch?v=nze2ZFj7FCk&lc=UgxmsrbI9fLWmkgvD3N4AaABAg)
+</p>
+<!-- ====================================== -->
 <!-- Fine-tuning LLMs -->
 <!-- ====================================== -->
 <a id="Fine-tuning-LLMs"></a>
-<h3>Fine-tuning LLMs:</h3>
+
+<h3><a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/LLM-Fine-Tuning"><b>Fine-tuning LLMs:</b></a></h3>
 <p>
-<a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/LLM-Fine-Tuning"><b>Fine-tuning LLMs</b></a>: We use a fictional company called Cubetriangle and design the pipeline to process its raw data, finetune 3 large language models (LLMs) on it, and design a chatbot using the best model.
+In this project, we use a fictional company called Cubetriangle and design the pipeline to process its raw data, finetune `3` large language models (LLMs) on it, and design a chatbot using the best model.
 
 **YouTube video:** [Link](https://www.youtube.com/watch?v=_g4o21A6AY8&t=1154s)
 
@@ -53,9 +64,9 @@ NOTE: This is the general structure of the projects, however there might be smal
 <!-- WebGPT -->
 <!-- ====================================== -->
 <a id="WebGPT"></a>
-<h3>WebGPT:</h3>
+<h3><a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/WebGPT"><b>WebGPT:</b></a></h3>
 <p>
-<a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/WebGPT"><b>WebGPT</b></a>: is a powerful tool enabling users to pose questions that require internet searches. Leveraging GPT models:
+WebGPT is a powerful tool enabling users to pose questions that require internet searches. Leveraging GPT models:
 
 * It identifies and executes the most relevant given Python functions in response to user queries. 
 * The second GPT model generates responses by combining user queries with content retrieved from the web search engine. 
@@ -72,9 +83,9 @@ NOTE: This is the general structure of the projects, however there might be smal
 <!-- RAG-GPT -->
 <!-- ====================================== -->
 <a id="RAG-GPT"></a>
-<h3>RAG-GPT:</h3>
+<h3><a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/RAG-GPT"><b>RAG-GPT:</b></a></h3>
 <p>
-<a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/RAG-GPT"><b>RAG-GPT</b></a>: is a chatbot that enables you to chat with your documents (PDFs and Doc). The chatbot offers versatile usage through three distinct methods:
+RAG-GPT is a chatbot that enables you to chat with your documents (PDFs and Doc). The chatbot offers versatile usage through three distinct methods:
 
 1. **Offline Documents**: Engage with documents that you've pre-processed and vectorized. These documents can be seamlessly integrated into your chat sessions.
 2. **Real-time Uploads:** Easily upload documents during your chat sessions, allowing the chatbot to process and respond to the content on-the-fly.
@@ -88,9 +99,9 @@ NOTE: This is the general structure of the projects, however there might be smal
 <!-- WebRAGQuery -->
 <!-- ====================================== -->
 <a id="WebRAGQuery"></a>
-<h3>WebRAGQuery: Combining WebGPT and RAG-GPT:</h3>
+<a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/WebRAGQuery"><b>WebRAGQuery: (Combining WebGPT and RAG-GPT)</b></a>
 <p>
-<a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/WebRAGQuery"><b>WebRAGQuery</b></a> is a chatbot that goes beyond typical internet searches. Built on the foundations of WebGPT and RAG-GPT, this project empowers users to delve into the depths of both general knowledge and specific URL content.
+WebRAGQuery is a chatbot that goes beyond typical internet searches. Built on the foundations of WebGPT and RAG-GPT, this project empowers users to delve into the depths of both general knowledge and specific URL content.
 
 Key Features:</br>
 
@@ -113,10 +124,10 @@ Key Features:</br>
 <!-- LLM-function-calling-tutorial -->
 <!-- -------------------------------------- -->
 <a id="LLM-function-calling-tutorial"></a>
-<h3>LLM Function Calling Tutorial:</h3>
+<h3><a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/tutorials/LLM-function-calling-tutorial"><b>LLM Function Calling Tutorial:</b></a></h3>
 <p>
-<a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/tutorials/LLM-function-calling-tutorial"><b>LLM-function-calling-tutorial</b></a>:
-    showcases the capacity of GPT models to produce executable functions in JSON format. It illustrates this capability through a practical example involving the utilization of Python with the GPT model.
+
+This project showcases the capacity of GPT models to produce executable functions in JSON format. It illustrates this capability through a practical example involving the utilization of Python with the GPT model.
 
 Libraries: [OpenAI](https://platform.openai.com/docs/models/overview)
 
@@ -125,10 +136,10 @@ Libraries: [OpenAI](https://platform.openai.com/docs/models/overview)
 <!-- -------------------------------------- -->
 <!-- LLM-function-calling-tutorial -->
 <!-- -------------------------------------- -->
-<a id="LLM-function-calling-tutorial"></a>
-<h2>Visualizing Text Vectorization:</h2>
+<a id="Vectorization-Tutorial"></a>
+<h3><a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/tutorials/vectorization_tutorial"><b>Visualizing Text Vectorization:</b></a></h3>
 <p>
-<a style=" white-space:nowrap; " href="https://github.com/Farzad-R/LLM-Zero-to-Hundred/tree/master/tutorials/vectorization_tutorial"><b>Visualizing Text Vectorization</b></a>: provides a comprehensive visualization of text vectorization and demonstrates the power of vector search. It further explores the vectorization on both OpenAi `text-embedding-ada-002` and the open source `BAAI/bge-large-zh-v1.5` model.
+This project provides a comprehensive visualization of text vectorization and demonstrates the power of vector search. It further explores the vectorization on both OpenAi `text-embedding-ada-002` and the open source `BAAI/bge-large-zh-v1.5` model.
 
 Libraries: [OpenAI](https://platform.openai.com/docs/models/overview) - [HuggingFace](https://huggingface.co/BAAI/bge-large-zh-v1.5)
 
