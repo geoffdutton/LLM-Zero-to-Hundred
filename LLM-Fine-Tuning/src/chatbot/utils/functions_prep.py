@@ -15,7 +15,12 @@ class PrepareFunctions:
         Returns:
             Dict: A dictionary containing the function name, description, and parameters schema.
         """
-        kw = {n: (o.annotation, ... if o.default == inspect.Parameter.empty else o.default)
-              for n, o in inspect.signature(f).parameters.items()}
-        s = create_model(f'Input for `{f.__name__}`', **kw).schema()
+        kw = {
+            n: (
+                o.annotation,
+                ... if o.default == inspect.Parameter.empty else o.default,
+            )
+            for n, o in inspect.signature(f).parameters.items()
+        }
+        s = create_model(f"Input for `{f.__name__}`", **kw).schema()
         return dict(name=f.__name__, description=f.__doc__, parameters=s)

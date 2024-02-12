@@ -7,6 +7,7 @@ class UISettings:
 
     This class provides static methods for toggling UI components, such as a sidebar.
     """
+
     @staticmethod
     def toggle_sidebar(state):
         """

@@ -19,9 +19,14 @@ class PrepareFunctions:
         Returns:
             Dict: A dictionary containing the function name, description, and parameters schema.
         """
-        kw = {n: (o.annotation, ... if o.default == inspect.Parameter.empty else o.default)
-              for n, o in inspect.signature(f).parameters.items()}
-        s = create_model(f'Input for `{f.__name__}`', **kw).schema()
+        kw = {
+            n: (
+                o.annotation,
+                ... if o.default == inspect.Parameter.empty else o.default,
+            )
+            for n, o in inspect.signature(f).parameters.items()
+        }
+        s = create_model(f"Input for `{f.__name__}`", **kw).schema()
         return dict(name=f.__name__, description=f.__doc__, parameters=s)
 
     @staticmethod
@@ -34,7 +39,8 @@ class PrepareFunctions:
         """
         return [
             PrepareFunctions.jsonschema(
-                WebSummarizer.summarize_the_webpage),  # webpage summarization functionality
+                WebSummarizer.summarize_the_webpage
+            ),  # webpage summarization functionality
             PrepareFunctions.jsonschema(WebSearch.retrieve_web_search_results),
             PrepareFunctions.jsonschema(WebSearch.get_instant_web_answer),
             PrepareFunctions.jsonschema(WebSearch.web_search_pdf),
@@ -42,7 +48,8 @@ class PrepareFunctions:
             PrepareFunctions.jsonschema(WebSearch.web_search_news),
             # PrepareFunctions.jsonschema(WebSearch.web_search_text),
             PrepareFunctions.jsonschema(
-                prepare_the_requested_url_for_q_and_a)  # rag functionality
+                prepare_the_requested_url_for_q_and_a
+            ),  # rag functionality
         ]
 
     @staticmethod
@@ -58,23 +65,24 @@ class PrepareFunctions:
         """
         func_name: str = response.choices[0].message.function_call.name
         func_args: Dict = json.loads(
-            response.choices[0].message.function_call.arguments)
+            response.choices[0].message.function_call.arguments
+        )
         # Call the function with the given arguments
-        if func_name == 'summarize_the_webpage':
+        if func_name == "summarize_the_webpage":
             result = WebSummarizer.summarize_the_webpage(**func_args)
-        elif func_name == 'retrieve_web_search_results':
+        elif func_name == "retrieve_web_search_results":
             result = WebSearch.retrieve_web_search_results(**func_args)
-        elif func_name == 'web_search_news':
+        elif func_name == "web_search_news":
             result = WebSearch.web_search_news(**func_args)
-        elif func_name == 'get_instant_web_answer':
+        elif func_name == "get_instant_web_answer":
             result = WebSearch.get_instant_web_answer(**func_args)
-        elif func_name == 'web_search_video':
+        elif func_name == "web_search_video":
             result = WebSearch.web_search_video(**func_args)
-        elif func_name == 'web_search_pdf':
+        elif func_name == "web_search_pdf":
             result = WebSearch.web_search_pdf(**func_args)
-        elif func_name == 'web_search_text':
+        elif func_name == "web_search_text":
             result = WebSearch.web_search_text(**func_args)
-        elif func_name == 'prepare_the_requested_url_for_q_and_a':
+        elif func_name == "prepare_the_requested_url_for_q_and_a":
             result = prepare_the_requested_url_for_q_and_a(**func_args)
         else:
             raise ValueError(f"Function '{func_name}' not found.")

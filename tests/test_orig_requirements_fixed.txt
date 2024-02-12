@@ -1,0 +1,8 @@
+aiofiles==23.2.1
+aiohttp==3.9.1
+ca-certificates==2023.12.12
+cachetools==5.3.2
+openssl==3.0.12
+pip==23.3.1
+toml==0.10.2
+zlib==1.2.13

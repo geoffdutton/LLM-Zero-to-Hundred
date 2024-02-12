@@ -16,6 +16,7 @@ from langchain.prompts.chat import (
     SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
 )
+
 start_time = time.time()
 _ = load_dotenv(find_dotenv())
 openai.api_type = os.getenv("OPENAI_API_TYPE")
@@ -28,13 +29,14 @@ with open(here("configs/config.yml")) as cfg:
 
 splitter_type = cfg["langchain_cfg"]["splitter_type"]
 
-embeddings = OpenAIEmbeddings(deployment=cfg["llm_cfg"]["embed_model_name"],
-                              openai_api_key=openai.api_key,
-                              openai_api_base=openai.api_base,
-                              openai_api_version=openai.api_version,
-                              openai_api_type=openai.api_type,
-                              # chunk_size=10
-                              )
+embeddings = OpenAIEmbeddings(
+    deployment=cfg["llm_cfg"]["embed_model_name"],
+    openai_api_key=openai.api_key,
+    openai_api_base=openai.api_base,
+    openai_api_version=openai.api_version,
+    openai_api_type=openai.api_type,
+    # chunk_size=10
+)
 llm = AzureChatOpenAI(
     temperature=cfg["llm_cfg"]["temperature"],
     openai_api_key=openai.api_key,
@@ -42,14 +44,21 @@ llm = AzureChatOpenAI(
     openai_api_version=openai.api_version,
     openai_api_type=openai.api_type,
     streaming=False,
-    deployment_name=cfg["llm_cfg"]["gpt_model"])
+    deployment_name=cfg["llm_cfg"]["gpt_model"],
+)
 
 if splitter_type == "recursive":
-    vectordb = Chroma(persist_directory=str(here(cfg["langchain_cfg"]["recursive_vector_db_save_dir"])),
-                      embedding_function=embeddings)
+    vectordb = Chroma(
+        persist_directory=str(
+            here(cfg["langchain_cfg"]["recursive_vector_db_save_dir"])
+        ),
+        embedding_function=embeddings,
+    )
 elif splitter_type == "token":
-    vectordb = Chroma(persist_directory=str(here(cfg["langchain_cfg"]["token_vector_db_save_dir"])),
-                      embedding_function=embeddings)
+    vectordb = Chroma(
+        persist_directory=str(here(cfg["langchain_cfg"]["token_vector_db_save_dir"])),
+        embedding_function=embeddings,
+    )
 
 """search_type:
 
@@ -71,8 +80,7 @@ Your task is to respond to the user's new question using the information from th
 {summaries}"""
 
 messages = [
-    SystemMessagePromptTemplate.from_template(
-        llm_system_role),
+    SystemMessagePromptTemplate.from_template(llm_system_role),
     HumanMessagePromptTemplate.from_template("{question}"),
 ]
 
@@ -85,7 +93,7 @@ chain = RetrievalQAWithSourcesChain.from_chain_type(
     chain_type="stuff",
     retriever=retriever,
     return_source_documents=True,
-    chain_type_kwargs=chain_type_kwargs
+    chain_type_kwargs=chain_type_kwargs,
 )
 # test:
 # question = "Explain is the architecture of vision transformer model"
@@ -95,11 +103,13 @@ chain = RetrievalQAWithSourcesChain.from_chain_type(
 # print()
 
 
-questions_df = pd.read_excel(os.path.join(
-    here(cfg["eval_questions_dir"]), cfg["eval_file_name"]))
+questions_df = pd.read_excel(
+    os.path.join(here(cfg["eval_questions_dir"]), cfg["eval_file_name"])
+)
 print("\n\n")
 print(
-    f"processing the questions for langchain with {splitter_type} splitter_type and `{search_type}` search_type.")
+    f"processing the questions for langchain with {splitter_type} splitter_type and `{search_type}` search_type."
+)
 print("--------------------------------------\n\n")
 for idx, row in questions_df.iterrows():
     inference_start_time = time.time()
@@ -119,10 +129,10 @@ for idx, row in questions_df.iterrows():
     print("--------------------------------------\n\n")
 
 questions_df.to_excel(
-    os.path.join(here(cfg["eval_questions_dir"]), cfg["eval_file_name"]), index=False)
+    os.path.join(here(cfg["eval_questions_dir"]), cfg["eval_file_name"]), index=False
+)
 
-print(
-    f"Execution was successfull and {cfg['eval_file_name']} file is saved.\n\n")
+print(f"Execution was successfull and {cfg['eval_file_name']} file is saved.\n\n")
 end_time = time.time()
 # Calculate and print the execution time
 execution_time = end_time - start_time

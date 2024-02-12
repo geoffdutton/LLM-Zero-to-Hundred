@@ -17,18 +17,15 @@ class Memory:
             None
         """
         # Create a DataFrame from the chat history list
-        df = pd.DataFrame(chat_history_lst, columns=[
-                          "User query", "Response"])
+        df = pd.DataFrame(chat_history_lst, columns=["User query", "Response"])
 
         # Check if the file exists and is not empty to avoid writing headers again
         if os.path.isfile(file_path) and os.path.getsize(file_path) > 0:
             # If the file exists, append without headers
-            df.to_csv(file_path, mode='a', header=False,
-                      index=False, encoding='utf-8')
+            df.to_csv(file_path, mode="a", header=False, index=False, encoding="utf-8")
         else:
             # If the file does not exist, write with headers
-            df.to_csv(file_path, mode='w', header=True,
-                      index=False, encoding='utf-8')
+            df.to_csv(file_path, mode="w", header=True, index=False, encoding="utf-8")
 
     @staticmethod
     def read_recent_chat_history(file_path: str, num_entries: int = 2) -> List:

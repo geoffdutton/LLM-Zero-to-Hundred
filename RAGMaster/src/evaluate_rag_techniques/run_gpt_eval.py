@@ -5,6 +5,7 @@ import os
 import openai
 from pyprojroot import here
 from tqdm import tqdm
+
 _ = load_dotenv(find_dotenv())
 openai.api_type = os.getenv("OPENAI_API_TYPE")
 openai.api_base = os.getenv("OPENAI_API_BASE")
@@ -14,8 +15,9 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 with open(here("configs/config.yml")) as cfg:
     cfg = yaml.load(cfg, Loader=yaml.FullLoader)
 
-questions_df = pd.read_excel(os.path.join(
-    here(cfg["eval_questions_dir"]), cfg["eval_file_name"]))
+questions_df = pd.read_excel(
+    os.path.join(here(cfg["eval_questions_dir"]), cfg["eval_file_name"])
+)
 
 llm_system_role = """You will receive a question, along with its correct answer and the answer from langchain_token_mmr technique. Score the given answer from 0 to 1.
     Write down each answer in a separate line with no extra character.\n\n
@@ -48,7 +50,9 @@ for idx, row in questions_df.iterrows():
     langchain_recursive_similarity_result = row["langchain_recursive_similarity_result"]
     langchain_recursive_mmr_result = row["langchain_recursive_mmr_result"]
     llama_index_sentence_retrieval_result = row["llama_index_sentence_retrieval_result"]
-    llama_index_auto_merging_retrieval_result = row["llama_index_auto_merging_retrieval_result"]
+    llama_index_auto_merging_retrieval_result = row[
+        "llama_index_auto_merging_retrieval_result"
+    ]
 
     # prompt = f"Question: {question}\n\nCorrect answer: {correct_answer},\
     #     \n\n\nlangchain_recursive_similarity: {langchain_recursive_similarity_result}\
@@ -63,34 +67,34 @@ for idx, row in questions_df.iterrows():
 
     messages = [
         {"role": "system", "content": llm_system_role},
-        {"role": "user", "content": prompt}
+        {"role": "user", "content": prompt},
     ]
     response = openai.ChatCompletion.create(
         engine=cfg["llm_cfg"]["gpt_model"],
         messages=[
             {"role": "system", "content": llm_system_role},
-            {"role": "user", "content": prompt}
+            {"role": "user", "content": prompt},
         ],
-        temperature=cfg["llm_cfg"]["temperature"]
+        temperature=cfg["llm_cfg"]["temperature"],
     )
     result = response["choices"][0]["message"]["content"]
     print(f"\nresult:\n {result}\n")
     # Initialize variables to store the results
-    lowest_score = float('inf')
-    highest_score = float('-inf')
+    lowest_score = float("inf")
+    highest_score = float("-inf")
     lowest_keys = []
     highest_keys = []
 
     # Split the text into lines
 
-    lines = result.split('\n')
-    lines = [x for x in lines if x != '']
+    lines = result.split("\n")
+    lines = [x for x in lines if x != ""]
 
     print(f"\nlines:\n {lines}\n")
     for line in lines:
         result_dict = {}
         # Split the line into key and value parts
-        key, value = line.split(': ')
+        key, value = line.split(": ")
         value = float(value)
         questions_df.at[idx, f"{key}_score"] = value
         # Check for lowest score
@@ -114,5 +118,6 @@ for idx, row in questions_df.iterrows():
     #     print(f"index: {idx} had an issue.")
     #     pass
 questions_df.to_excel(
-    os.path.join(here(cfg["eval_questions_dir"]), cfg["eval_file_name"]), index=False)
+    os.path.join(here(cfg["eval_questions_dir"]), cfg["eval_file_name"]), index=False
+)
 print("Scoring is done and excel file was updated!")

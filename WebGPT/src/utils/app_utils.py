@@ -21,9 +21,11 @@ class Apputils:
         Returns:
             Dict: A dictionary containing the function name, description, and parameters schema.
         """
-        kw = {n: (o.annotation, ... if o.default == Parameter.empty else o.default)
-              for n, o in inspect.signature(f).parameters.items()}
-        s = create_model(f'Input for `{f.__name__}`', **kw).schema()
+        kw = {
+            n: (o.annotation, ... if o.default == Parameter.empty else o.default)
+            for n, o in inspect.signature(f).parameters.items()
+        }
+        s = create_model(f"Input for `{f.__name__}`", **kw).schema()
         return dict(name=f.__name__, description=f.__doc__, parameters=s)
 
     @staticmethod
@@ -58,30 +60,33 @@ class Apputils:
         """
         func_name: str = response.choices[0].message.function_call.name
         func_args: Dict = json.loads(
-            response.choices[0].message.function_call.arguments)
+            response.choices[0].message.function_call.arguments
+        )
         # Call the function with the given arguments
-        if func_name == 'retrieve_web_search_results':
+        if func_name == "retrieve_web_search_results":
             result = WebSearch.retrieve_web_search_results(**func_args)
-        elif func_name == 'web_search_text':
+        elif func_name == "web_search_text":
             result = WebSearch.web_search_text(**func_args)
-        elif func_name == 'web_search_pdf':
+        elif func_name == "web_search_pdf":
             result = WebSearch.web_search_pdf(**func_args)
-        elif func_name == 'web_search_image':
+        elif func_name == "web_search_image":
             result = WebSearch.web_search_image(**func_args)
-        elif func_name == 'web_search_video':
+        elif func_name == "web_search_video":
             result = WebSearch.web_search_video(**func_args)
-        elif func_name == 'web_search_news':
+        elif func_name == "web_search_news":
             result = WebSearch.web_search_news(**func_args)
-        elif func_name == 'get_instant_web_answer':
+        elif func_name == "get_instant_web_answer":
             result = WebSearch.get_instant_web_answer(**func_args)
-        elif func_name == 'web_search_map':
+        elif func_name == "web_search_map":
             result = WebSearch.web_search_map(**func_args)
         else:
             raise ValueError(f"Function '{func_name}' not found.")
         return result
 
     @staticmethod
-    def ask_llm_function_caller(gpt_model: str, temperature: float, messages: List, function_json_list: List):
+    def ask_llm_function_caller(
+        gpt_model: str, temperature: float, messages: List, function_json_list: List
+    ):
         """
         Generate a response from an OpenAI ChatCompletion API call with specific function calls.
 
@@ -99,7 +104,7 @@ class Apputils:
             messages=messages,
             functions=function_json_list,
             function_call="auto",
-            temperature=temperature
+            temperature=temperature,
         )
         return response
 
@@ -117,8 +122,6 @@ class Apputils:
             The response object from the OpenAI ChatCompletion API call.
         """
         response = openai.ChatCompletion.create(
-            engine=gpt_model,
-            messages=messages,
-            temperature=temperature
+            engine=gpt_model, messages=messages, temperature=temperature
         )
         return response

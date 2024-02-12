@@ -1,4 +1,3 @@
-
 import openai
 import os
 from dotenv import load_dotenv
@@ -69,10 +68,12 @@ class LoadConfig:
         # LLM configs
         self.llm_engine = app_config["llm_config"]["engine"]
         self.llm_system_role = app_config["llm_config"]["llm_system_role"]
-        self.persist_directory = str(here(
-            app_config["directories"]["persist_directory"]))  # needs to be strin for summation in chromadb backend: self._settings.require("persist_directory") + "/chroma.sqlite3"
-        self.custom_persist_directory = str(here(
-            app_config["directories"]["custom_persist_directory"]))
+        self.persist_directory = str(
+            here(app_config["directories"]["persist_directory"])
+        )  # needs to be strin for summation in chromadb backend: self._settings.require("persist_directory") + "/chroma.sqlite3"
+        self.custom_persist_directory = str(
+            here(app_config["directories"]["custom_persist_directory"])
+        )
         self.embedding_model = OpenAIEmbeddings()
 
         # Retrieval configs
@@ -85,10 +86,13 @@ class LoadConfig:
         # Summarizer config
         self.max_final_token = app_config["summarizer_config"]["max_final_token"]
         self.token_threshold = app_config["summarizer_config"]["token_threshold"]
-        self.summarizer_llm_system_role = app_config["summarizer_config"]["summarizer_llm_system_role"]
+        self.summarizer_llm_system_role = app_config["summarizer_config"][
+            "summarizer_llm_system_role"
+        ]
         self.character_overlap = app_config["summarizer_config"]["character_overlap"]
-        self.final_summarizer_llm_system_role = app_config[
-            "summarizer_config"]["final_summarizer_llm_system_role"]
+        self.final_summarizer_llm_system_role = app_config["summarizer_config"][
+            "final_summarizer_llm_system_role"
+        ]
         self.temperature = app_config["llm_config"]["temperature"]
 
         # Memory
@@ -145,7 +149,8 @@ class LoadConfig:
             try:
                 shutil.rmtree(directory_path)
                 print(
-                    f"The directory '{directory_path}' has been successfully removed.")
+                    f"The directory '{directory_path}' has been successfully removed."
+                )
             except OSError as e:
                 print(f"Error: {e}")
         else:

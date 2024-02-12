@@ -6,7 +6,9 @@ from langchain.embeddings.openai import OpenAIEmbeddings
 
 class LLM_RAG:
     @staticmethod
-    def search_vectordb(persist_directory: str, user_query: str, k: int = 3) -> List[str]:
+    def search_vectordb(
+        persist_directory: str, user_query: str, k: int = 3
+    ) -> List[str]:
         """
         Search the vectordb for documents similar to the user's query.
 
@@ -29,17 +31,24 @@ class LLM_RAG:
             ```
         """
         embedding_model = OpenAIEmbeddings()
-        vectordb = Chroma(persist_directory=persist_directory,
-                          embedding_function=embedding_model)
+        vectordb = Chroma(
+            persist_directory=persist_directory, embedding_function=embedding_model
+        )
         docs = vectordb.similarity_search(user_query, k=k)
-        retrieved_docs_page_content = [
-            str(x.page_content)+"\n\n" for x in docs]
-        retrieved_docs_page_content = "# Retrieved content:\n" + \
-            str(retrieved_docs_page_content)
+        retrieved_docs_page_content = [str(x.page_content) + "\n\n" for x in docs]
+        retrieved_docs_page_content = "# Retrieved content:\n" + str(
+            retrieved_docs_page_content
+        )
         return retrieved_docs_page_content
 
     @staticmethod
-    def prepare_messages(persist_directory: str, user_query: str, llm_system_role: str, input_chat_history: str, k: int = 3) -> List[Dict]:
+    def prepare_messages(
+        persist_directory: str,
+        user_query: str,
+        llm_system_role: str,
+        input_chat_history: str,
+        k: int = 3,
+    ) -> List[Dict]:
         """
         Prepare a list of messages for interaction, including system, user, and search result information.
 
@@ -64,11 +73,12 @@ class LLM_RAG:
             ```
         """
         retrieved_docs_page_content = LLM_RAG.search_vectordb(
-            persist_directory=persist_directory, user_query=user_query)
+            persist_directory=persist_directory, user_query=user_query
+        )
         query = f"# Chat history: {input_chat_history}\n\n, # User's new query: {user_query}\n\n, # vector search result on the url:\n\n, {retrieved_docs_page_content}"
         messages = [
             {"role": "system", "content": llm_system_role},
-            {"role": "user", "content": input_chat_history + query}
+            {"role": "user", "content": input_chat_history + query},
         ]
         return messages
 
@@ -86,8 +96,6 @@ class LLM_RAG:
             The response object from the OpenAI ChatCompletion API call.
         """
         response = openai.ChatCompletion.create(
-            engine=gpt_model,
-            messages=messages,
-            temperature=temperature
+            engine=gpt_model, messages=messages, temperature=temperature
         )
         return response

@@ -2,23 +2,29 @@ from pyprojroot import here
 from llama_index.llms import AzureOpenAI
 from llama_index.embeddings import AzureOpenAIEmbedding
 from llama_index.node_parser import SentenceWindowNodeParser
-from llama_index import (load_index_from_storage,
-                         ServiceContext,
-                         StorageContext,
-                         SimpleDirectoryReader,
-                         VectorStoreIndex,
-                         )
+from llama_index import (
+    load_index_from_storage,
+    ServiceContext,
+    StorageContext,
+    SimpleDirectoryReader,
+    VectorStoreIndex,
+)
 from llama_index.retrievers import AutoMergingRetriever
 from llama_index.query_engine import RetrieverQueryEngine
-from llama_index.indices.postprocessor import (SentenceTransformerRerank,
-                                               MetadataReplacementPostProcessor)
+from llama_index.indices.postprocessor import (
+    SentenceTransformerRerank,
+    MetadataReplacementPostProcessor,
+)
 from llama_index.node_parser import get_leaf_nodes, HierarchicalNodeParser
 import os
 from dotenv import load_dotenv, find_dotenv
+
 _ = load_dotenv(find_dotenv())
 
 
-def load_llm_and_embedding_models(gpt_model: str = "gpt-35-turbo-16k", embed_model_name: str = "bge-small-en-v1.5"):
+def load_llm_and_embedding_models(
+    gpt_model: str = "gpt-35-turbo-16k", embed_model_name: str = "bge-small-en-v1.5"
+):
     # Load the GPT model and the embedding model from AzureOpenAI
     llm = AzureOpenAI(
         engine=gpt_model,
@@ -51,13 +57,20 @@ def set_service_context(llm, embed_model):
 
 def load_documents(documents_dir):
     documents = SimpleDirectoryReader(
-        input_files=[here(f"{documents_dir}/{d}")
-                     for d in os.listdir(here(documents_dir))]  # gets each file and create the full path
+        input_files=[
+            here(f"{documents_dir}/{d}") for d in os.listdir(here(documents_dir))
+        ]  # gets each file and create the full path
     ).load_data()
     return documents
 
 
-def build_sentence_window_index(document, llm, save_dir, embed_model="local:BAAI/bge-small-en-v1.5", window_size: int = 3):
+def build_sentence_window_index(
+    document,
+    llm,
+    save_dir,
+    embed_model="local:BAAI/bge-small-en-v1.5",
+    window_size: int = 3,
+):
     """
     Builds an index of sentence windows from a given document using a specified language model and embedding model.
 
@@ -164,13 +177,10 @@ def get_sentence_window_query_engine(
     """
     # define postprocessors
     postproc = MetadataReplacementPostProcessor(target_metadata_key="window")
-    rerank = SentenceTransformerRerank(
-        top_n=rerank_top_n, model=rerank_model
-    )
+    rerank = SentenceTransformerRerank(top_n=rerank_top_n, model=rerank_model)
 
     sentence_window_engine = sentence_index.as_query_engine(
-        similarity_top_k=similarity_top_k, node_postprocessors=[
-            postproc, rerank]
+        similarity_top_k=similarity_top_k, node_postprocessors=[postproc, rerank]
     )
     return sentence_window_engine
 
@@ -180,8 +190,7 @@ def get_automerging_query_engine(
     similarity_top_k: int = 12,
     rerank_top_n: int = 2,
 ):
-    base_retriever = automerging_index.as_retriever(
-        similarity_top_k=similarity_top_k)
+    base_retriever = automerging_index.as_retriever(similarity_top_k=similarity_top_k)
     retriever = AutoMergingRetriever(
         base_retriever, automerging_index.storage_context, verbose=True
     )
