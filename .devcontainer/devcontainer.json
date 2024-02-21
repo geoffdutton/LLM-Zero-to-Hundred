@@ -12,8 +12,6 @@
     "vscode": {
       "settings": {
         "workbench.colorTheme": "Visual Studio Dark",
-        "python.linting.enabled": true,
-        "python.linting.pylintEnabled": true,
         "editor.defaultFormatter": "esbenp.prettier-vscode",
         "editor.formatOnSave": true,
         "[python]": {
