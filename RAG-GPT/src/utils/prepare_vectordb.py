@@ -22,12 +22,12 @@ class PrepareVectorDB:
     """
 
     def __init__(
-            self,
-            data_directory: str,
-            persist_directory: str,
-            embedding_model_engine: str,
-            chunk_size: int,
-            chunk_overlap: int
+        self,
+        data_directory: str,
+        persist_directory: str,
+        embedding_model_engine: str,
+        chunk_size: int,
+        chunk_overlap: int,
     ) -> None:
         """
         Initialize the PrepareVectorDB instance.
@@ -45,7 +45,7 @@ class PrepareVectorDB:
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
-            separators=["\n\n", "\n", " ", ""]
+            separators=["\n\n", "\n", " ", ""],
         )
         """Other options: CharacterTextSplitter, TokenTextSplitter, etc."""
         self.data_directory = data_directory
@@ -73,8 +73,9 @@ class PrepareVectorDB:
             document_list = os.listdir(self.data_directory)
             docs = []
             for doc_name in document_list:
-                docs.extend(PyPDFLoader(os.path.join(
-                    self.data_directory, doc_name)).load())
+                docs.extend(
+                    PyPDFLoader(os.path.join(self.data_directory, doc_name)).load()
+                )
                 doc_counter += 1
             print("Number of loaded documents:", doc_counter)
             print("Number of pages:", len(docs), "\n\n")
@@ -110,9 +111,8 @@ class PrepareVectorDB:
         vectordb = Chroma.from_documents(
             documents=chunked_documents,
             embedding=self.embedding,
-            persist_directory=self.persist_directory
+            persist_directory=self.persist_directory,
         )
         print("VectorDB is created and saved.")
-        print("Number of vectors in vectordb:",
-              vectordb._collection.count(), "\n\n")
+        print("Number of vectors in vectordb:", vectordb._collection.count(), "\n\n")
         return vectordb

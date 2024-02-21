@@ -1,5 +1,7 @@
-from llama_index.indices.postprocessor import (SentenceTransformerRerank,
-                                               MetadataReplacementPostProcessor)
+from llama_index.indices.postprocessor import (
+    SentenceTransformerRerank,
+    MetadataReplacementPostProcessor,
+)
 from llama_index.query_engine import RetrieverQueryEngine
 from llama_index.retrievers import AutoMergingRetriever
 
@@ -33,13 +35,10 @@ def get_sentence_window_query_engine(
     """
     # define postprocessors
     postproc = MetadataReplacementPostProcessor(target_metadata_key="window")
-    rerank = SentenceTransformerRerank(
-        top_n=rerank_top_n, model=rerank_model
-    )
+    rerank = SentenceTransformerRerank(top_n=rerank_top_n, model=rerank_model)
 
     sentence_window_engine = sentence_index.as_query_engine(
-        similarity_top_k=similarity_top_k, node_postprocessors=[
-            postproc, rerank]
+        similarity_top_k=similarity_top_k, node_postprocessors=[postproc, rerank]
     )
     return sentence_window_engine
 
@@ -50,14 +49,11 @@ def get_automerging_query_engine(
     similarity_top_k: int = 12,
     rerank_top_n: int = 2,
 ):
-    base_retriever = automerging_index.as_retriever(
-        similarity_top_k=similarity_top_k)
+    base_retriever = automerging_index.as_retriever(similarity_top_k=similarity_top_k)
     retriever = AutoMergingRetriever(
         base_retriever, automerging_index.storage_context, verbose=True
     )
-    rerank = SentenceTransformerRerank(
-        top_n=rerank_top_n, model=rerank_model
-    )
+    rerank = SentenceTransformerRerank(top_n=rerank_top_n, model=rerank_model)
     auto_merging_engine = RetrieverQueryEngine.from_args(
         retriever, node_postprocessors=[rerank]
     )

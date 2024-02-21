@@ -31,7 +31,9 @@ class URLPrep:
             self.chunk_size = app_config["RAG"]["chunk_size"]
             self.chunk_overlap = app_config["RAG"]["chunk_overlap"]
             self.persist_directory = app_config["RAG"]["persist_directory"]
-            self.persist_directory = f"{self.persist_directory}chroma_{int(time.time())}"
+            self.persist_directory = (
+                f"{self.persist_directory}chroma_{int(time.time())}"
+            )
             # create a new one for the new url.
             Apputils.create_directory(self.persist_directory)
             self.embedding_model_engine = app_config["RAG"]["embedding_model_engine"]
@@ -44,7 +46,8 @@ class URLPrep:
                 persist_directory=self.persist_directory,
                 embedding_model_engine=self.embedding_model_engine,
                 chunk_size=self.chunk_size,
-                chunk_overlap=self.chunk_overlap)
+                chunk_overlap=self.chunk_overlap,
+            )
             db_stat = prepare_url_vectordb_instance.prepare_and_save_vectordb()
             return db_stat
         except BaseException as e:

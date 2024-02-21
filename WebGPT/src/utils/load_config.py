@@ -1,9 +1,9 @@
-
 import openai
 import os
 from dotenv import load_dotenv
 import yaml
 from pyprojroot import here
+
 load_dotenv()
 
 
@@ -31,7 +31,9 @@ class LoadConfig:
         self.gpt_model = app_config["gpt_model"]
         self.temperature = app_config["temperature"]
         self.llm_system_role = "You are a useful chatbot."
-        self.llm_function_caller_system_role = app_config["llm_function_caller_system_role"]
+        self.llm_function_caller_system_role = app_config[
+            "llm_function_caller_system_role"
+        ]
         self.llm_system_role = app_config["llm_system_role"]
 
         self.load_openai_credentials()

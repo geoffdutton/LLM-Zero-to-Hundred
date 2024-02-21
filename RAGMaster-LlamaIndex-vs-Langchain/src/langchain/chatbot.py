@@ -4,6 +4,7 @@ from chainlit.input_widget import Select
 from langchain_utils.load_config import LoadConfig
 import os
 from dotenv import load_dotenv, find_dotenv
+
 # import yaml
 # import pandas as pd
 import openai
@@ -17,6 +18,7 @@ from langchain.prompts.chat import (
     SystemMessagePromptTemplate,
     HumanMessagePromptTemplate,
 )
+
 _ = load_dotenv(find_dotenv())
 
 CFG = LoadConfig()
@@ -26,13 +28,14 @@ openai.api_version = os.getenv("OPENAI_API_VERSION")
 openai.api_key = os.getenv("OPENAI_API_KEY")
 
 
-embeddings = OpenAIEmbeddings(deployment=CFG.embed_model_name,
-                              openai_api_key=openai.api_key,
-                              openai_api_base=openai.api_base,
-                              openai_api_version=openai.api_version,
-                              openai_api_type=openai.api_type,
-                              # chunk_size=10
-                              )
+embeddings = OpenAIEmbeddings(
+    deployment=CFG.embed_model_name,
+    openai_api_key=openai.api_key,
+    openai_api_base=openai.api_base,
+    openai_api_version=openai.api_version,
+    openai_api_type=openai.api_type,
+    # chunk_size=10
+)
 llm = AzureChatOpenAI(
     temperature=CFG.temperature,
     openai_api_key=openai.api_key,
@@ -40,7 +43,8 @@ llm = AzureChatOpenAI(
     openai_api_version=openai.api_version,
     openai_api_type=openai.api_type,
     streaming=False,
-    deployment_name=CFG.gpt_model)
+    deployment_name=CFG.gpt_model,
+)
 
 llm_system_role = """You are a chatbot. You'll receive a prompt that includes retrieved content from the vectorDB based on the user's question, and the source.\
 Your task is to respond to the user's new question using the information from the vectorDB without relying on your own knowledge.
@@ -48,8 +52,7 @@ Your task is to respond to the user's new question using the information from th
 {summaries}"""
 
 messages = [
-    SystemMessagePromptTemplate.from_template(
-        llm_system_role),
+    SystemMessagePromptTemplate.from_template(llm_system_role),
     HumanMessagePromptTemplate.from_template("{question}"),
 ]
 
@@ -61,31 +64,27 @@ chain_type_kwargs = {"prompt": prompt}
 @cl.on_chat_start
 async def on_chat_start():
     try:
-        await cl.Avatar(
-            name="chatbot",
-            path=str(here("public/langchain.png"))
-        ).send()
+        await cl.Avatar(name="chatbot", path=str(here("public/langchain.png"))).send()
         # await cl.Avatar(
         #     name="Error",
         #     url=str(here("public/langchain.png"))
         # ).send()
-        await cl.Avatar(
-            name="User",
-            path=str(here("public/me.png"))
+        await cl.Avatar(name="User", path=str(here("public/me.png"))).send()
+        await cl.Message(
+            f"Hello, welcome to `Langchain` Chatbot! How can I help you?"
         ).send()
-        await cl.Message(f"Hello, welcome to `Langchain` Chatbot! How can I help you?").send()
         settings = await cl.ChatSettings(
             [
-                Select(id="rag_type",
-                       label="Select the retrieval technique",
-                       values=[
-                           "mmr search", "Similarity search"]
-                       ),
-                Select(id="splitter_type",
-                       label="Select the splitter technique",
-                       values=[
-                           "Token splitter", "Recursive character splitter"]
-                       ),
+                Select(
+                    id="rag_type",
+                    label="Select the retrieval technique",
+                    values=["mmr search", "Similarity search"],
+                ),
+                Select(
+                    id="splitter_type",
+                    label="Select the splitter technique",
+                    values=["Token splitter", "Recursive character splitter"],
+                ),
             ]
         ).send()
         cl.user_session.set(
@@ -111,7 +110,9 @@ async def setup_agent(settings):
         await cl.Message(user_message).send()
 
     except Exception as e:
-        await cl.Message("An unexpected error occurred when retrieving the previous sessions. We are looking into it.").send()
+        await cl.Message(
+            "An unexpected error occurred when retrieving the previous sessions. We are looking into it."
+        ).send()
 
 
 @cl.on_message
@@ -119,14 +120,24 @@ async def on_message(message: cl.Message):
     try:
         msg = cl.Message(content="")
         await msg.send()
-        if cl.user_session.get("splitter_type") == "Recursive character splitter" or cl.user_session.get("splitter_type") == None:
-            vectordb = Chroma(persist_directory=str(here(CFG.recursive_vector_db_save_dir)),
-                              embedding_function=embeddings)
+        if (
+            cl.user_session.get("splitter_type") == "Recursive character splitter"
+            or cl.user_session.get("splitter_type") == None
+        ):
+            vectordb = Chroma(
+                persist_directory=str(here(CFG.recursive_vector_db_save_dir)),
+                embedding_function=embeddings,
+            )
         elif cl.user_session.get("splitter_type") == "Token splitter":
-            vectordb = Chroma(persist_directory=str(here(CFG.token_vector_db_save_dir)),
-                              embedding_function=embeddings)
+            vectordb = Chroma(
+                persist_directory=str(here(CFG.token_vector_db_save_dir)),
+                embedding_function=embeddings,
+            )
         # default value: mmr
-        if cl.user_session.get("rag_type") == "mmr search" or cl.user_session.get("rag_type") == None:
+        if (
+            cl.user_session.get("rag_type") == "mmr search"
+            or cl.user_session.get("rag_type") == None
+        ):
             print("RAG-Type: mmr search\n")
             retriever = vectordb.as_retriever(
                 search_type="mmr",
@@ -145,7 +156,7 @@ async def on_message(message: cl.Message):
             chain_type="stuff",
             retriever=retriever,
             return_source_documents=True,
-            chain_type_kwargs=chain_type_kwargs
+            chain_type_kwargs=chain_type_kwargs,
         )
         result = chain(message.content)
         answer = result["answer"]
@@ -153,4 +164,6 @@ async def on_message(message: cl.Message):
     except BaseException as e:
         print(f"Caught error on on_message in app.py: {e}")
         traceback.print_exc()
-        await cl.Message("An error occured while processing your query. Please try again later.").send()
+        await cl.Message(
+            "An error occured while processing your query. Please try again later."
+        ).send()

@@ -1,9 +1,9 @@
-
 import yaml
 import openai
 from dotenv import load_dotenv
 import os
 from pyprojroot import here
+
 load_dotenv()
 
 
@@ -18,15 +18,19 @@ class LoadConfig:
         self.num_entries: int = app_config["memory"]["num_entries"]
 
         # llm function caller
-        self.llm_function_caller_temperature: float = app_config[
-            "llm_function_caller"]["temperature"]
-        self.llm_function_caller_system_role: str = app_config["llm_function_caller"]["system_role"]
-        self.llm_function_caller_gpt_model: str = app_config["llm_function_caller"]["gpt_model"]
+        self.llm_function_caller_temperature: float = app_config["llm_function_caller"][
+            "temperature"
+        ]
+        self.llm_function_caller_system_role: str = app_config["llm_function_caller"][
+            "system_role"
+        ]
+        self.llm_function_caller_gpt_model: str = app_config["llm_function_caller"][
+            "gpt_model"
+        ]
 
         # Summarizer config
         self.llm_inference_gpt_model = app_config["llm_inference"]["gpt_model"]
-        self.llm_inference_system_role = app_config[
-            "llm_inference"]["system_role"]
+        self.llm_inference_system_role = app_config["llm_inference"]["system_role"]
         self.llm_inference_temperature = app_config["llm_inference"]["temperature"]
 
         # load openai credentials

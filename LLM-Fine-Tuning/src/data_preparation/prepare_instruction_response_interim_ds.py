@@ -11,9 +11,8 @@ def prepare_instruction_response_interim_ds(data_dir):
     finetuning_dataset = []
     for i in range(len(df["instruction"])):
         instruction = f"### Instruction:\n{df['instruction'][i]}\n\n\n### Response:\n"
-        response = df['response'][i]
-        finetuning_dataset.append(
-            {"instruction": instruction, "response": response})
+        response = df["response"][i]
+        finetuning_dataset.append({"instruction": instruction, "response": response})
     return finetuning_dataset
 
 
@@ -21,8 +20,11 @@ if __name__ == "__main__":
     with open(here("configs/config.yml")) as cfg:
         app_config = yaml.load(cfg, Loader=yaml.FullLoader)
     dataset = prepare_instruction_response_interim_ds(
-        data_dir=app_config["json_dir"]["product_user_manual_instruction_response"])
-    with jsonlines.open(here(app_config["interim_dir"]["cubetriangle_instruction_response"]), 'w') as writer:
+        data_dir=app_config["json_dir"]["product_user_manual_instruction_response"]
+    )
+    with jsonlines.open(
+        here(app_config["interim_dir"]["cubetriangle_instruction_response"]), "w"
+    ) as writer:
         writer.write_all(dataset)
 
 

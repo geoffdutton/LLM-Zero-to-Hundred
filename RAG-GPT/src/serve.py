@@ -49,7 +49,7 @@ class MultiDirectoryHTTPRequestHandler(http.server.SimpleHTTPRequestHandler):
             str: The translated file path.
         """
         # Split the path to get the first directory component
-        parts = path.split('/', 2)
+        parts = path.split("/", 2)
         if len(parts) > 1:
             first_directory = parts[1]
             # Check if the first directory matches any of your target directories

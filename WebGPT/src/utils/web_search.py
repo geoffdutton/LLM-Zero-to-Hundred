@@ -3,6 +3,7 @@
 
 
 from duckduckgo_search import DDGS
+
 # The DDGS and AsyncDDGS classes are used to retrieve search results from DuckDuckGo.com.
 from typing import List, Optional
 
@@ -39,8 +40,16 @@ class WebSearch:
         """
 
         with DDGS() as ddgs:
-            results = [r for r in ddgs.text(
-                query, region='wt-wt', safesearch='off', timelimit='y', max_results=max_results)]
+            results = [
+                r
+                for r in ddgs.text(
+                    query,
+                    region="wt-wt",
+                    safesearch="off",
+                    timelimit="y",
+                    max_results=max_results,
+                )
+            ]
         return results
 
     @staticmethod
@@ -57,8 +66,16 @@ class WebSearch:
         """
         # Searching for pdf files
         with DDGS() as ddgs:
-            results = [r for r in ddgs.text(
-                f'{query}:pdf', region='wt-wt', safesearch='off', timelimit='y', max_results=max_results)]
+            results = [
+                r
+                for r in ddgs.text(
+                    f"{query}:pdf",
+                    region="wt-wt",
+                    safesearch="off",
+                    timelimit="y",
+                    max_results=max_results,
+                )
+            ]
         return results
 
     @staticmethod
@@ -150,13 +167,15 @@ class WebSearch:
                 region="wt-wt",
                 safesearch="off",
                 timelimit="m",
-                max_results=max_results
+                max_results=max_results,
             )
             results = [r for r in ddgs_news_gen]
         return results
 
     @staticmethod
-    def web_search_map(query: str, place: str = "Ottawa", max_results: Optional[int] = 5):
+    def web_search_map(
+        query: str, place: str = "Ottawa", max_results: Optional[int] = 5
+    ):
         """
         Search for maps on DuckDuckGo.com.
 
@@ -169,8 +188,9 @@ class WebSearch:
             List of search results as dictionaries containing the title, URL, and image URL of each map.
         """
         with DDGS() as ddgs:
-            results = [r for r in ddgs.maps(
-                query, place=place, max_results=max_results)]
+            results = [
+                r for r in ddgs.maps(query, place=place, max_results=max_results)
+            ]
         return results
 
     @staticmethod
@@ -189,7 +209,9 @@ class WebSearch:
         return results
 
     @staticmethod
-    def user_proxy_for_text_web_search(query: str, timeout: Optional[int] = 20, max_results: Optional[int] = 5):
+    def user_proxy_for_text_web_search(
+        query: str, timeout: Optional[int] = 20, max_results: Optional[int] = 5
+    ):
         """
         Search for text on DuckDuckGo.com using a user-defined proxy.
 

@@ -1,0 +1,32 @@
+{
+  "name": "LLM Dev Container 6000",
+  "image": "mcr.microsoft.com/devcontainers/anaconda",
+  "features": {
+    "ghcr.io/devcontainers/features/node": {
+      "version": "lts",
+      "install": ["eslint", "prettier"],
+      "nvmVersion": "latest"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "workbench.colorTheme": "Visual Studio Dark",
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+        "editor.formatOnSave": true,
+        "[python]": {
+          "editor.defaultFormatter": "ms-python.black-formatter"
+        }
+      },
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "GitHub.copilot",
+        "esbenp.prettier-vscode",
+        "ms-python.black-formatter"
+      ]
+    }
+  },
+  "forwardPorts": [3000, 8080],
+  "postCreateCommand": "pip install -U pip"
+}

@@ -22,12 +22,12 @@ class PrepareURLVectorDB:
     """
 
     def __init__(
-            self,
-            url: str,
-            persist_directory: str,
-            embedding_model_engine: str,
-            chunk_size: int,
-            chunk_overlap: int
+        self,
+        url: str,
+        persist_directory: str,
+        embedding_model_engine: str,
+        chunk_size: int,
+        chunk_overlap: int,
     ) -> None:
         """
         Initialize the PrepareVectorDB instance. It does not handle multiple urls for now.
@@ -44,7 +44,7 @@ class PrepareURLVectorDB:
         self.text_splitter = RecursiveCharacterTextSplitter(
             chunk_size=chunk_size,
             chunk_overlap=chunk_overlap,
-            separators=["\n\n", "\n", " "]
+            separators=["\n\n", "\n", " "],
         )
         """Other options: CharacterTextSplitter, NotionDirectoryLoader, TokenTextSplitter, etc."""
         self.url = self._ensure_https(url)
@@ -76,7 +76,10 @@ class PrepareURLVectorDB:
             return documents
         except Exception as e:
             raise Exception(
-                "The requested link is not supported by langchain yet. Error: {}".format(e))
+                "The requested link is not supported by langchain yet. Error: {}".format(
+                    e
+                )
+            )
 
     def __chunk_documents(self, docs: List) -> List:
         """
@@ -107,11 +110,12 @@ class PrepareURLVectorDB:
             vectordb = Chroma.from_documents(
                 documents=chunked_documents,
                 embedding=self.embedding,
-                persist_directory=self.persist_directory
+                persist_directory=self.persist_directory,
             )
             print("VectorDB is created and saved.")
-            print("Number of vectors in vectordb:",
-                  vectordb._collection.count(), "\n\n")
+            print(
+                "Number of vectors in vectordb:", vectordb._collection.count(), "\n\n"
+            )
             return True
         except BaseException as e:
             print(f"Caught exception in PrepareURLVectorDB class: {e}")

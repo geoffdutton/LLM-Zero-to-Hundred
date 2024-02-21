@@ -38,9 +38,8 @@ def prepare_interim_qa_dataset(df: pd.DataFrame) -> List:
     finetuning_dataset = []
     for i in range(len(df["question"])):
         question = f"### Question:\n{df['question'][i]}\n\n\n### Answer:\n"
-        answer = df['answer'][i]
-        finetuning_dataset.append(
-            {"question": question, "answer": answer})
+        answer = df["answer"][i]
+        finetuning_dataset.append({"question": question, "answer": answer})
 
     return finetuning_dataset
 
@@ -52,7 +51,9 @@ if __name__ == "__main__":
     print("dataframe shape:", all_q_a_df.shape)
     print("Dataframe head:\n", all_q_a_df.head(4))
     dataset = prepare_interim_qa_dataset(all_q_a_df)
-    with jsonlines.open(here(app_config["interim_dir"]["cubetriangle_qa"]), 'w') as writer:
+    with jsonlines.open(
+        here(app_config["interim_dir"]["cubetriangle_qa"]), "w"
+    ) as writer:
         writer.write_all(dataset)
 
 

@@ -4,7 +4,9 @@ from typing import List, Dict
 
 class LLMFuntionCaller:
     @staticmethod
-    def prepare_messages(llm_function_caller_system_role: str, input_chat_history: str, user_query: str) -> List[Dict]:
+    def prepare_messages(
+        llm_function_caller_system_role: str, input_chat_history: str, user_query: str
+    ) -> List[Dict]:
         """
         Prepares a list of message dictionaries to be used by a language model.
 
@@ -23,13 +25,14 @@ class LLMFuntionCaller:
         """
         query = f"# Chat history: {input_chat_history}\n\n, # User's new query: {user_query}"
         return [
-            {"role": "system", "content": str(
-                llm_function_caller_system_role)},
-            {"role": "user", "content": query}
+            {"role": "system", "content": str(llm_function_caller_system_role)},
+            {"role": "user", "content": query},
         ]
 
     @staticmethod
-    def ask(gpt_model: str, temperature: float, messages: List, function_json_list: List):
+    def ask(
+        gpt_model: str, temperature: float, messages: List, function_json_list: List
+    ):
         """
         Generate a response from an OpenAI ChatCompletion API call with specific function calls.
 
@@ -47,6 +50,6 @@ class LLMFuntionCaller:
             messages=messages,
             functions=function_json_list,
             function_call="auto",
-            temperature=temperature
+            temperature=temperature,
         )
         return response
